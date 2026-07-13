@@ -2,84 +2,289 @@
 
 ## Project Overview
 
-This project demonstrates how Amazon S3 Versioning can be used to protect business files from accidental deletion or overwriting.
+This project demonstrates the design and implementation of a secure, reliable, and cost-effective cloud backup solution using Amazon Web Services (AWS). The solution was developed for a fictional company, **ABC Financial Services**, to simulate how organizations protect critical business documents from accidental deletion and overwriting while optimizing long-term storage costs.
 
-## Business Case
+Throughout this project, I applied cloud engineering best practices by implementing Amazon S3 Versioning, Lifecycle Policies, and Amazon S3 Glacier Instant Retrieval. I also documented the solution using an AWS architecture diagram, GitHub, and Git version control.
 
-ABC Financial Services needed a reliable cloud storage solution to ensure previous versions of important reports could be recovered whenever mistakes occurred.
+---
 
-## AWS Services
+# Business Problem
 
-- Amazon S3
-- S3 Versioning
+ABC Financial Services stores monthly financial reports in the cloud. As the company grew, it encountered several challenges:
 
-## Implementation Progress
+* Employees accidentally overwrote important reports.
+* Files were accidentally deleted.
+* Cloud storage costs continued to increase because all files remained in the S3 Standard storage class.
+* The company required a reliable backup strategy while maintaining compliance with long-term record retention requirements.
 
-### Step 1: Created Amazon S3 Bucket
+Without an appropriate cloud storage strategy, these issues could result in permanent data loss, operational disruptions, and increased storage expenses.
 
-A private S3 bucket was created to store company backup files.
+---
 
-### Step 2: Uploaded Company Reports
+# Solution
 
-Sample financial reports were uploaded:
+To address these challenges, I designed and implemented an AWS-based backup solution using the following services:
 
-- January Sales Report
-- February Sales Report
-- March Sales Report
+* Amazon S3 for secure object storage
+* Amazon S3 Versioning to preserve previous versions of files
+* Delete Marker recovery to restore accidentally deleted files
+* Lifecycle Policies to automatically transition older files into Amazon S3 Glacier Instant Retrieval
+* Git and GitHub for version control and project documentation
 
-These files simulate business documents that require secure cloud backup.
+The solution improves business continuity, protects important company records, and reduces long-term storage costs.
 
-## Data Loss Simulation
+---
 
-Before enabling S3 Versioning, I simulated an accidental file overwrite scenario.
+# Solution Architecture
 
-Original file:
+![Architecture Diagram](architecture/diagrams/company-backup-architecture.png)
 
-January-Sales-Report.txt
+---
 
-Original revenue:
+# AWS Services Used
 
-$25,000
+| AWS Service                         | Purpose                                                    |
+| ----------------------------------- | ---------------------------------------------------------- |
+| Amazon S3                           | Stores company backup files securely                       |
+| Amazon S3 Versioning                | Protects against accidental overwrites and deletions       |
+| Lifecycle Policy                    | Automatically transitions older objects to cheaper storage |
+| Amazon S3 Glacier Instant Retrieval | Low-cost storage for infrequently accessed reports         |
+| Git                                 | Tracks project changes                                     |
+| GitHub                              | Hosts project repository and documentation                 |
 
+---
 
-A new incorrect version was uploaded with:
+# Project Structure
 
-Revenue: $0
+```text
+aws-s3-company-backup-system/
 
+├── architecture/
+│   ├── diagrams/
+│   │   └── abc-s3-company-backup-architecture.png
+│   └── architecture-notes.md
+│
+├── reports/
+│   ├── January-Sales-Report.txt
+│   ├── February-Sales-Report.txt
+│   └── March-Sales-Report.txt
+│
+├── screenshots/
+│
+├── README.md
+└── 
+```
 
-Because Versioning was disabled, the previous file version could not be recovered.
+---
 
-This demonstrates the importance of backup strategies in cloud environments.
+# Project Implementation
 
-## Enabling Amazon S3 Versioning
+## Phase 1 – Created the Backup Storage
 
-Versioning was enabled on the S3 bucket to protect company reports from accidental overwrites.
-
-After enabling Versioning:
-
-- Every upload creates a new object version.
-- Previous versions remain stored.
-- Each version receives a unique Version ID.
-- Business files can be recovered if mistakes occur.
-
-This feature is commonly used in production environments to improve data durability and support disaster recovery.
-
-## Recovering Deleted Files with S3 Versioning
-
-To test Amazon S3 Versioning, I simulated the accidental deletion of the January Sales Report.
-
-Although the file appeared to be deleted, Amazon S3 created a Delete Marker instead of permanently removing the object.
-
-By deleting the Delete Marker, I successfully restored the latest version of the report without using an external backup.
+* Created a private Amazon S3 bucket.
+* Enabled Block Public Access.
+* Uploaded monthly company reports.
+* Organized reports using folders and object storage.
 
 ### Key Learning
 
-S3 Versioning protects business data from accidental deletions by preserving previous object versions and allowing rapid recovery.
+Amazon S3 Buckets act as containers for storing objects securely in the cloud.
 
-## Cost Optimization with Amazon S3 Lifecycle Policies
+---
 
-To reduce long-term storage costs, I created an Amazon S3 Lifecycle Rule that automatically transitions objects from the S3 Standard storage class to S3 Glacier Instant Retrieval after 30 days.
+## Phase 2 – Simulated Accidental File Overwrite
+
+To understand the importance of backup strategies, I intentionally uploaded an incorrect version of the January Sales Report.
+
+Original Revenue:
+
+```
+$25,000
+```
+
+Incorrect Upload:
+
+```
+Revenue: $0
+```
+
+Because Versioning was disabled, the original report could not be recovered.
+
+### Business Lesson
+
+Simply storing files in the cloud does not automatically protect them from accidental mistakes.
+
+---
+
+## Phase 3 – Enabled Amazon S3 Versioning
+
+Versioning was enabled on the S3 bucket.
+
+After enabling Versioning:
+
+* Every upload creates a new object version.
+* Previous versions remain stored.
+* Every version receives a unique Version ID.
+* Future accidental overwrites can be recovered.
+
+### Key Learning
+
+Versioning only protects changes made after it has been enabled.
+
+---
+
+## Phase 4 – Recovered Deleted Files
+
+I simulated an accidental deletion of the January Sales Report.
+
+Instead of permanently deleting the object, Amazon S3 created a Delete Marker.
+
+By removing the Delete Marker, I restored the latest version of the report without using an external backup.
+
+### Key Learning
+
+Amazon S3 Versioning protects against both accidental overwrites and accidental deletions.
+
+---
+
+## Phase 5 – Implemented Lifecycle Policies
+
+To reduce long-term storage costs, I created a Lifecycle Policy that automatically transitions files after 30 days from:
+
+Amazon S3 Standard
+
+↓
+
+Amazon S3 Glacier Instant Retrieval
 
 ### Business Value
 
-This automation reduces storage costs while ensuring that older company reports remain securely stored and can still be retrieved when needed.
+The company continues to retain important reports while significantly reducing long-term storage costs.
+
+---
+
+# Screenshots
+
+## Amazon S3 Bucket
+
+![Bucket](project-screenshots/final-bucket-view.png)
+
+---
+
+## Amazon S3 Versioning Enabled
+
+![Versioning](project-screenshots/versioning-enabled.png)
+
+---
+
+## Delete Marker Recovery
+
+![Delete Marker](project-screenshots/delete-marker.png)
+
+---
+
+## Lifecycle Policy
+
+![Lifecycle Policy](project-screenshots/lifecycle-rule.png)
+
+---
+
+# Skills Demonstrated
+
+## Cloud Services
+
+* Amazon S3
+* Amazon S3 Versioning
+* Amazon S3 Glacier Instant Retrieval
+* Lifecycle Policies
+
+## Cloud Engineering
+
+* Cloud Storage
+* Backup Strategy
+* Disaster Recovery
+* Cost Optimization
+* Data Protection
+
+## Tools
+
+* AWS Management Console
+* Git
+* GitHub
+* Visual Studio Code
+* Draw.io
+
+---
+
+# Key Learning Outcomes
+
+Through this project, I learned how to:
+
+* Design secure cloud storage solutions.
+* Protect business files using Amazon S3 Versioning.
+* Recover deleted files using Delete Markers.
+* Implement Lifecycle Policies for automated cost optimization.
+* Build and document AWS architecture diagrams.
+* Use Git and GitHub for version control.
+* Translate technical AWS concepts into business solutions.
+
+---
+
+# Challenges Encountered
+
+During this project, I encountered several practical challenges, including:
+
+* Learning Git and GitHub workflows.
+* Understanding the difference between overwriting and versioning.
+* Recovering deleted files using Delete Markers.
+* Organizing project documentation professionally.
+
+Resolving these challenges significantly improved my understanding of AWS cloud storage and cloud engineering best practices.
+
+---
+
+# Future Improvements
+
+Future enhancements to this solution may include:
+
+* Encrypting objects using AWS KMS.
+* Restricting access with IAM policies.
+* Configuring Cross-Region Replication (CRR).
+* Sending upload notifications using Amazon SNS.
+* Deploying the infrastructure using Terraform.
+* Monitoring storage activity with Amazon CloudWatch.
+* Recording API activity using AWS CloudTrail.
+
+---
+
+# Lessons Learned
+
+This project demonstrated that cloud engineering is about much more than creating AWS resources.
+
+Successful cloud solutions must balance:
+
+* Security
+* Reliability
+* Cost Optimization
+* Operational Excellence
+* Business Requirements
+
+Every AWS service should solve a real business problem rather than simply demonstrating technical capability.
+
+---
+
+# Author
+
+**David Opoku Dumfeh**
+
+Aspiring Cloud Engineer | AWS Cloud Learner | DevOps Enthusiast
+
+**GitHub:** https://github.com/Dumfeh
+
+**LinkedIn:** https://www.linkedin.com/in/david-opoku-dumfeh-5756a6151/
+
+---
+
+# Acknowledgements
+
+This project was completed as part of my hands-on cloud engineering learning journey. It was designed to simulate real-world business scenarios while applying AWS best practices for secure cloud storage, disaster recovery, and cost optimization.
