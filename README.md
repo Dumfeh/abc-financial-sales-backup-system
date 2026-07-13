@@ -75,3 +75,11 @@ By deleting the Delete Marker, I successfully restored the latest version of the
 ### Key Learning
 
 S3 Versioning protects business data from accidental deletions by preserving previous object versions and allowing rapid recovery.
+
+## Cost Optimization with Amazon S3 Lifecycle Policies
+
+To reduce long-term storage costs, I created an Amazon S3 Lifecycle Rule that automatically transitions objects from the S3 Standard storage class to S3 Glacier Instant Retrieval after 30 days.
+
+### Business Value
+
+This automation reduces storage costs while ensuring that older company reports remain securely stored and can still be retrieved when needed.
