@@ -63,3 +63,15 @@ After enabling Versioning:
 - Business files can be recovered if mistakes occur.
 
 This feature is commonly used in production environments to improve data durability and support disaster recovery.
+
+## Recovering Deleted Files with S3 Versioning
+
+To test Amazon S3 Versioning, I simulated the accidental deletion of the January Sales Report.
+
+Although the file appeared to be deleted, Amazon S3 created a Delete Marker instead of permanently removing the object.
+
+By deleting the Delete Marker, I successfully restored the latest version of the report without using an external backup.
+
+### Key Learning
+
+S3 Versioning protects business data from accidental deletions by preserving previous object versions and allowing rapid recovery.
