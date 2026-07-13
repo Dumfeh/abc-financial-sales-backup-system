@@ -50,3 +50,16 @@ Revenue: $0
 Because Versioning was disabled, the previous file version could not be recovered.
 
 This demonstrates the importance of backup strategies in cloud environments.
+
+## Enabling Amazon S3 Versioning
+
+Versioning was enabled on the S3 bucket to protect company reports from accidental overwrites.
+
+After enabling Versioning:
+
+- Every upload creates a new object version.
+- Previous versions remain stored.
+- Each version receives a unique Version ID.
+- Business files can be recovered if mistakes occur.
+
+This feature is commonly used in production environments to improve data durability and support disaster recovery.
