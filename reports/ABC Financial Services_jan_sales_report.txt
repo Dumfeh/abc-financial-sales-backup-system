@@ -1,6 +1,11 @@
 ABC Financial Services
-January Sales Report
 
-Total Sales: $25,000
-Total Customers: 150
-Prepared By: David Opoku Dumfeh
+Monthly Sales Report
+
+Month: January
+
+Revenue: $0
+
+ERROR - File uploaded incorrectly
+
+Prepared by: David Opoku Dumfeh
